@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Calculator, Euro, Users, TrendingUp, Info } from "lucide-react";
 import type { Language } from "@/app/page";
 
@@ -8,22 +8,47 @@ interface Props {
   lang: Language;
   devicePrice?: number;
   setDevicePrice?: (price: number) => void;
+  initialSettings?: Record<string, string>;
 }
 
-export default function ROICalculator({ lang, devicePrice: externalDevicePrice, setDevicePrice: externalSetDevicePrice }: Props) {
+export default function ROICalculator({ 
+  lang, 
+  devicePrice: externalDevicePrice, 
+  setDevicePrice: externalSetDevicePrice,
+  initialSettings 
+}: Props) {
   // Use local state if no external state is passed, but support dynamic external state
   const [localDevicePrice, localSetDevicePrice] = useState(30000);
   const devicePrice = externalDevicePrice !== undefined ? externalDevicePrice : localDevicePrice;
   const setDevicePrice = externalSetDevicePrice !== undefined ? externalSetDevicePrice : localSetDevicePrice;
 
   const [monthlyPatients, setMonthlyPatients] = useState(5);
-  const [sessionPrice, setSessionPrice] = useState(400);
+  
+  // Set default session price based on lang & settings
+  const [sessionPrice, setSessionPrice] = useState(() => {
+    return lang === "FR" 
+      ? parseFloat(initialSettings?.fr_default_price || "400") 
+      : parseFloat(initialSettings?.be_default_national_price || "250");
+  });
 
-  const LEASING_RATE = 0.0216; // approx 650/month for 30k
+  // Dynamically update default session price when language changes
+  useEffect(() => {
+    setSessionPrice(
+      lang === "FR" 
+        ? parseFloat(initialSettings?.fr_default_price || "400") 
+        : parseFloat(initialSettings?.be_default_national_price || "250")
+    );
+  }, [lang, initialSettings]);
+
+  const LEASING_RATE = parseFloat(initialSettings?.leasing_rate || "0.0216");
 
   const monthlyLease = devicePrice * LEASING_RATE;
   const monthlyRevenue = sessionPrice * monthlyPatients;
   const breakEvenPatients = monthlyLease / sessionPrice;
+
+  // Tax Logic
+  const taxDeductionRentFR = monthlyLease * parseFloat(initialSettings?.fr_tax_deduction_rate || "1.00");
+  const basicInvestmentDeductionBE = devicePrice * parseFloat(initialSettings?.be_tax_deduction_rate || "0.10");
 
   const t = {
     title: lang === "FR" ? "Simulateur de Rentabilité & Financement" : "Rentabiliteit & Financieringscalculator",
@@ -161,7 +186,7 @@ export default function ROICalculator({ lang, devicePrice: externalDevicePrice, 
                     <li className="flex gap-2">
                       <div className="w-1.5 h-1.5 rounded-full bg-indigo-500 mt-1.5 shrink-0"></div>
                       <span>
-                        <strong>Déductibilité intégrale (100%)</strong> de la charge de financement mensuelle directement sur votre compte de résultat pour réduire votre impôt (BNC ou IS).
+                        <strong>Déductibilité intégrale ({(parseFloat(initialSettings?.fr_tax_deduction_rate || "1.00") * 100).toFixed(0)}%)</strong> de la charge de financement mensuelle (soit <strong>€{taxDeductionRentFR.toFixed(0)}/mois</strong>) directement sur votre compte de résultat pour réduire votre impôt (BNC ou IS).
                       </span>
                     </li>
                     <li className="flex gap-2">
@@ -188,7 +213,7 @@ export default function ROICalculator({ lang, devicePrice: externalDevicePrice, 
                     <li className="flex gap-2">
                       <div className="w-1.5 h-1.5 rounded-full bg-indigo-500 mt-1.5 shrink-0"></div>
                       <span>
-                        <strong>Cashflow-optimalisatie :</strong> Geen voorafgaande betaling of prefinanciering van de btw. De btw wordt gespreid over de maandelijkse termijnen.
+                        <strong>Investeringsaftrek (Fiscale aftrek) :</strong> Mogelijk recht op een eenmalige investeringsaftrek van <strong>{(parseFloat(initialSettings?.be_tax_deduction_rate || "0.10") * 100).toFixed(0)}%</strong> (bruto besparing van <strong>€{basicInvestmentDeductionBE.toFixed(0)}</strong>).
                       </span>
                     </li>
                     <li className="flex gap-2">

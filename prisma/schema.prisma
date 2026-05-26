@@ -15,6 +15,7 @@ enum Role {
   DOCTOR
   CLINIC
   NURSE_UNDER_SUPERVISION
+  ADMIN
 }
 
 enum Jurisdiction {
@@ -23,22 +24,29 @@ enum Jurisdiction {
 }
 
 model User {
-  id              String         @id @default(cuid())
-  name            String?
-  email           String?        @unique
-  emailVerified   DateTime?
-  image           String?
-  hashedPassword  String?
-  role            Role?
-  jurisdiction    Jurisdiction?
-  professionalId  String?        // RPPS for FR, INAMI for BE
-  naceCode        String?
-  simulations     Simulation[]
-  accounts        Account[]
-  sessions        Session[]
-  documents       Document[]
-  createdAt       DateTime       @default(now())
-  updatedAt       DateTime       @updatedAt
+  id                 String         @id @default(cuid())
+  name               String?
+  email              String?        @unique
+  emailVerified      DateTime?
+  image              String?
+  hashedPassword     String?
+  role               Role?
+  jurisdiction       Jurisdiction?
+  professionalId     String?        // RPPS for FR, INAMI for BE
+  naceCode           String?
+  simulations        Simulation[]
+  accounts           Account[]
+  sessions           Session[]
+  documents          Document[]
+  createdAt          DateTime       @default(now())
+  updatedAt          DateTime       @updatedAt
+  
+  // Admin Lead/Applicant tracking fields
+  companyName        String?
+  verificationStatus String         @default("PENDING") // PENDING, APPROVED, REJECTED
+  applicationStatus  String         @default("SUBMITTED") // SUBMITTED, UNDER_REVIEW, LENDER_MATCHING, APPROVED, REJECTED
+  selectedModel      String?
+  leaseDuration      Int?           @default(60)
 }
 
 model Account {
@@ -110,4 +118,33 @@ model Simulation {
   estimatedLeasingCost Float
   calculatedROI        Float        // e.g. Monthly net profit or ROI %
   createdAt            DateTime     @default(now())
+}
+
+model LeaseProvider {
+  id          String   @id @default(cuid())
+  name        String   @unique
+  isActive    Boolean  @default(true)
+  rates       Rate[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Rate {
+  id              String        @id @default(cuid())
+  providerId      String
+  provider        LeaseProvider @relation(fields: [providerId], references: [id], onDelete: Cascade)
+  durationMonths  Int           // 24, 36, 48, 60
+  apr             Float         // e.g. 0.054 (5.4%) or 0.0216 monthly rate
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  @@unique([providerId, durationMonths])
+}
+
+model SystemSetting {
+  id        String   @id @default(cuid())
+  key       String   @unique
+  value     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
