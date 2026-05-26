@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Snowflake, Sparkles, Activity, Zap, Play, Calculator, ArrowRight } from "lucide-react";
+import { Snowflake, Sparkles, Activity, Zap, Play, Calculator, ArrowRight, X } from "lucide-react";
 import type { Language } from "@/app/page";
 
 interface Props {
@@ -11,6 +11,9 @@ interface Props {
 }
 
 export default function MachineShowcase({ lang, onSimulate, onRegister }: Props) {
+  const [activeVideo, setActiveVideo] = React.useState<string | null>(null);
+  const [activeVideoTitle, setActiveVideoTitle] = React.useState<string>("");
+
   const t = {
     title: lang === "FR" ? "Gamme Cryo-Celsius® & Technologies" : "Cryo-Celsius® Assortiment & Technologie",
     subtitle: lang === "FR" 
@@ -43,6 +46,7 @@ export default function MachineShowcase({ lang, onSimulate, onRegister }: Props)
       monthlyEst: 690,
       icon: <Snowflake className="w-6 h-6 text-blue-600" />,
       colorClass: "from-blue-50 to-indigo-50 border-blue-200/80 shadow-blue-500/5",
+      videoUrl: "/videos/cryo-plates.mp4",
     },
     {
       id: "vacuum",
@@ -58,6 +62,7 @@ export default function MachineShowcase({ lang, onSimulate, onRegister }: Props)
       monthlyEst: 755,
       icon: <Snowflake className="w-6 h-6 text-indigo-600" />,
       colorClass: "from-indigo-50 to-blue-50 border-indigo-200/80 shadow-indigo-500/5",
+      videoUrl: "/videos/cryo-vacuum.mp4",
     }
   ];
 
@@ -71,6 +76,7 @@ export default function MachineShowcase({ lang, onSimulate, onRegister }: Props)
       monthlyEst: 430,
       icon: <Sparkles className="w-5 h-5 text-emerald-600" />,
       bgIcon: "bg-emerald-50 text-emerald-700",
+      videoUrl: "/videos/slim-celsius.mp4",
     },
     {
       id: "ems",
@@ -81,6 +87,7 @@ export default function MachineShowcase({ lang, onSimulate, onRegister }: Props)
       monthlyEst: 320,
       icon: <Activity className="w-5 h-5 text-purple-600" />,
       bgIcon: "bg-purple-50 text-purple-700",
+      videoUrl: "/videos/ems.mp4",
     },
     {
       id: "laser",
@@ -91,6 +98,7 @@ export default function MachineShowcase({ lang, onSimulate, onRegister }: Props)
       monthlyEst: 538,
       icon: <Zap className="w-5 h-5 text-amber-600" />,
       bgIcon: "bg-amber-50 text-amber-700",
+      videoUrl: "/videos/diode-laser.mp4",
     },
     {
       id: "lipolaser",
@@ -101,6 +109,7 @@ export default function MachineShowcase({ lang, onSimulate, onRegister }: Props)
       monthlyEst: 257,
       icon: <Sparkles className="w-5 h-5 text-rose-600" />,
       bgIcon: "bg-rose-50 text-rose-700",
+      videoUrl: "/videos/lipo-laser.mp4",
     }
   ];
 
@@ -169,21 +178,35 @@ export default function MachineShowcase({ lang, onSimulate, onRegister }: Props)
                     <span className="text-xl font-extrabold text-blue-700">~€{item.monthlyEst} <span className="text-xs font-semibold text-blue-500/80">{t.monthSuffix}</span></span>
                   </div>
 
-                  <div className="grid grid-cols-2 gap-3">
-                    <button
-                      onClick={() => onSimulate(item.price)}
-                      className="inline-flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl text-xs font-bold text-white bg-slate-900 hover:bg-slate-800 active:bg-black shadow-sm transition-all duration-200 cursor-pointer"
-                    >
-                      <Calculator size={13} />
-                      {t.simulateBtn}
-                    </button>
-                    <button
-                      onClick={onRegister}
-                      className="inline-flex items-center justify-center gap-1 py-2.5 px-3 rounded-xl text-xs font-bold text-blue-700 bg-white hover:bg-slate-50 border border-blue-200 shadow-3xs transition-all duration-200 cursor-pointer"
-                    >
-                      {t.agreeBtn}
-                      <ArrowRight size={12} className="group-hover:translate-x-0.5 transition-transform" />
-                    </button>
+                  <div className="space-y-2.5">
+                    <div className="grid grid-cols-2 gap-3">
+                      <button
+                        onClick={() => onSimulate(item.price)}
+                        className="inline-flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl text-xs font-bold text-white bg-slate-900 hover:bg-slate-800 active:bg-black shadow-sm transition-all duration-200 cursor-pointer"
+                      >
+                        <Calculator size={13} />
+                        {t.simulateBtn}
+                      </button>
+                      <button
+                        onClick={onRegister}
+                        className="inline-flex items-center justify-center gap-1 py-2.5 px-3 rounded-xl text-xs font-bold text-blue-700 bg-white hover:bg-slate-50 border border-blue-200 shadow-3xs transition-all duration-200 cursor-pointer"
+                      >
+                        {t.agreeBtn}
+                        <ArrowRight size={12} className="group-hover:translate-x-0.5 transition-transform" />
+                      </button>
+                    </div>
+                    {item.videoUrl && (
+                      <button
+                        onClick={() => {
+                          setActiveVideo(item.videoUrl!);
+                          setActiveVideoTitle(item.title);
+                        }}
+                        className="w-full inline-flex items-center justify-center gap-1.5 py-2 px-3 rounded-xl text-xs font-bold text-slate-700 bg-slate-100 hover:bg-slate-200 active:bg-slate-300 transition-all duration-200 cursor-pointer border border-slate-200/50"
+                      >
+                        <Play size={13} className="fill-slate-600 text-slate-600" />
+                        {lang === "FR" ? "Voir la démo vidéo" : "Bekijk videodemonstratie"}
+                      </button>
+                    )}
                   </div>
                 </div>
               </div>
@@ -218,14 +241,12 @@ export default function MachineShowcase({ lang, onSimulate, onRegister }: Props)
 
               {/* Video Container */}
               <div className="relative rounded-xl overflow-hidden aspect-video border border-white/10 shadow-inner bg-slate-900 my-4 z-10">
-                <iframe 
-                  src="https://www.facebook.com/plugins/video.php?href=https%3A%2F%2Fwww.facebook.com%2FCryo.Celsius.Officiel%2Fvideos%2F1423542056145884%2F&show_text=false&width=560" 
+                <video 
+                  src="/videos/general-promo.mp4" 
                   className="w-full h-full object-cover relative z-0"
-                  scrolling="no" 
-                  frameBorder="0" 
-                  allowFullScreen={true} 
-                  allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
-                ></iframe>
+                  controls
+                  preload="metadata"
+                />
               </div>
 
               <div className="relative z-10 pt-4 border-t border-white/10 flex items-center justify-between text-xs text-white/50 font-medium">
@@ -282,18 +303,74 @@ export default function MachineShowcase({ lang, onSimulate, onRegister }: Props)
                   <span className="text-base font-extrabold text-slate-800">~€{item.monthlyEst} <span className="text-[10px] font-semibold text-slate-500/80">{t.monthSuffix}</span></span>
                 </div>
 
-                <button
-                  onClick={() => onSimulate(item.price)}
-                  className="w-full inline-flex items-center justify-center gap-1.5 py-2 px-3 rounded-lg text-xs font-bold text-white bg-slate-900 hover:bg-slate-800 active:bg-black transition-all cursor-pointer"
-                >
-                  <Calculator size={12} />
-                  {t.simulateBtn}
-                </button>
+                {item.videoUrl ? (
+                  <div className="grid grid-cols-2 gap-2">
+                    <button
+                      onClick={() => onSimulate(item.price)}
+                      className="inline-flex items-center justify-center gap-1.5 py-2 px-2 rounded-lg text-xs font-bold text-white bg-slate-900 hover:bg-slate-800 active:bg-black transition-all cursor-pointer"
+                    >
+                      <Calculator size={12} />
+                      {t.simulateBtn}
+                    </button>
+                    <button
+                      onClick={() => {
+                        setActiveVideo(item.videoUrl!);
+                        setActiveVideoTitle(item.title);
+                      }}
+                      className="inline-flex items-center justify-center gap-1 py-2 px-2 rounded-lg text-xs font-bold text-slate-700 bg-slate-100 hover:bg-slate-200 active:bg-slate-300 transition-all cursor-pointer border border-slate-200/40"
+                    >
+                      <Play size={12} className="fill-slate-600 text-slate-600" />
+                      {lang === "FR" ? "Vidéo" : "Video"}
+                    </button>
+                  </div>
+                ) : (
+                  <button
+                    onClick={() => onSimulate(item.price)}
+                    className="w-full inline-flex items-center justify-center gap-1.5 py-2 px-3 rounded-lg text-xs font-bold text-white bg-slate-900 hover:bg-slate-800 active:bg-black transition-all cursor-pointer"
+                  >
+                    <Calculator size={12} />
+                    {t.simulateBtn}
+                  </button>
+                )}
               </div>
             </div>
           ))}
         </div>
       </div>
+
+      {/* Video Modal Overlay */}
+      {activeVideo && (
+        <div 
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-md p-4 animate-in fade-in duration-200"
+          onClick={() => setActiveVideo(null)}
+        >
+          <div 
+            className="relative max-w-4xl w-full rounded-2xl overflow-hidden bg-slate-950 border border-slate-800/80 shadow-2xl animate-in zoom-in-95 duration-200"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Modal Header */}
+            <div className="flex items-center justify-between p-4 border-b border-slate-800/60 bg-slate-900/40">
+              <h4 className="text-lg font-bold text-white tracking-tight">{activeVideoTitle}</h4>
+              <button 
+                onClick={() => setActiveVideo(null)}
+                className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-all cursor-pointer"
+              >
+                <X size={18} />
+              </button>
+            </div>
+
+            {/* Video Element */}
+            <div className="aspect-video bg-black flex items-center justify-center">
+              <video 
+                src={activeVideo} 
+                controls 
+                autoPlay 
+                className="w-full h-full object-contain"
+              />
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   );
 }
