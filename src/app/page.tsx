@@ -47,7 +47,7 @@ export default function Home() {
       <nav className="sticky top-0 z-30 w-full border-b border-slate-200/80 bg-white/70 backdrop-blur-md shadow-xs">
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <span className="font-extrabold text-xl md:text-2xl bg-gradient-to-r from-blue-900 to-indigo-950 bg-clip-text text-transparent tracking-tight">
+            <span className="font-extrabold text-xl md:text-2xl bg-gradient-to-r from-blue-900 to-indigo-950 bg-clip-text text-transparent tracking-tight pb-1 leading-normal">
               Cryo-Celsius®
             </span>
           </div>

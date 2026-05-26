@@ -117,7 +117,7 @@ export default function MachineShowcase({ lang, onSimulate, onRegister }: Props)
     <section className="py-12 space-y-16">
       {/* Introduction */}
       <div className="text-center max-w-3xl mx-auto space-y-4">
-        <h2 className="text-4xl md:text-5xl font-extrabold tracking-tight text-slate-900 bg-clip-text text-transparent bg-gradient-to-r from-blue-900 to-indigo-950">
+        <h2 className="text-4xl md:text-5xl font-extrabold tracking-tight text-slate-900 bg-clip-text text-transparent bg-gradient-to-r from-blue-900 to-indigo-950 pb-2 leading-tight">
           {t.title}
         </h2>
         <p className="text-lg text-slate-600 leading-relaxed">
