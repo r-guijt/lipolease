@@ -125,142 +125,91 @@ export default function MachineShowcase({ lang, onSimulate, onRegister }: Props)
         </p>
       </div>
 
-      {/* Flagships (Cryolipolyse) & Video Demo Side-By-Side */}
+      {/* Flagships (Cryolipolyse) */}
       <div className="space-y-6">
         <div className="flex items-center gap-2 border-b border-slate-200 pb-3">
           <div className="w-2 h-6 bg-blue-600 rounded-full"></div>
           <h3 className="text-2xl font-bold text-slate-900">{t.flagshipTitle}</h3>
         </div>
 
-        <div className="grid lg:grid-cols-12 gap-8 items-stretch">
-          {/* Flagship Cards */}
-          <div className="lg:col-span-8 grid md:grid-cols-2 gap-6">
-            {flagships.map((item) => (
-              <div 
-                key={item.id}
-                className={`relative flex flex-col justify-between rounded-2xl border p-6 bg-gradient-to-br ${item.colorClass} shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1 group`}
-              >
-                <div>
-                  <div className="flex justify-between items-start gap-2 mb-4">
-                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-blue-600 text-white shadow-sm">
-                      {item.icon}
-                      {t.flagshipBadge}
-                    </span>
-                    <span className="px-2.5 py-0.5 rounded border border-slate-200 text-slate-500 text-[10px] uppercase font-bold bg-white/80 shadow-2xs">
-                      {t.ceBadge}
-                    </span>
-                  </div>
-
-                  <h4 className="text-2xl font-extrabold text-slate-950 tracking-tight mb-2 group-hover:text-blue-950 transition-colors">
-                    {item.title}
-                  </h4>
-                  <p className="text-sm font-semibold text-blue-700/90 mb-4">{item.tagline}</p>
-                  <p className="text-slate-600 text-sm leading-relaxed mb-6">{item.desc}</p>
-
-                  <div className="space-y-2 mb-8 bg-white/60 backdrop-blur-xs rounded-xl p-4 border border-slate-200/50 shadow-3xs">
-                    {item.specs.map((spec, i) => (
-                      <div key={i} className="flex items-center gap-2 text-xs font-medium text-slate-700">
-                        <div className="w-1.5 h-1.5 rounded-full bg-blue-500"></div>
-                        {spec}
-                      </div>
-                    ))}
-                  </div>
+        {/* Flagship Cards */}
+        <div className="grid md:grid-cols-2 gap-8">
+          {flagships.map((item) => (
+            <div 
+              key={item.id}
+              className={`relative flex flex-col justify-between rounded-2xl border p-6 bg-gradient-to-br ${item.colorClass} shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1 group`}
+            >
+              <div>
+                <div className="flex justify-between items-start gap-2 mb-4">
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-blue-600 text-white shadow-sm">
+                    {item.icon}
+                    {t.flagshipBadge}
+                  </span>
+                  <span className="px-2.5 py-0.5 rounded border border-slate-200 text-slate-500 text-[10px] uppercase font-bold bg-white/80 shadow-2xs">
+                    {t.ceBadge}
+                  </span>
                 </div>
 
-                <div className="space-y-4 pt-4 border-t border-slate-200/60">
-                  <div className="flex justify-between items-baseline">
-                    <span className="text-xs text-slate-500 font-medium">{t.acquisitionPrice}</span>
-                    <span className="text-lg font-bold text-slate-900">€{item.price.toLocaleString(lang === "FR" ? "fr-FR" : "nl-NL")} <span className="text-[10px] text-slate-400 font-normal">HT</span></span>
-                  </div>
-                  
-                  <div className="flex justify-between items-baseline bg-blue-600/5 p-3 rounded-lg border border-blue-600/10">
-                    <span className="text-xs font-semibold text-blue-800">{t.startingFrom}</span>
-                    <span className="text-xl font-extrabold text-blue-700">~€{item.monthlyEst} <span className="text-xs font-semibold text-blue-500/80">{t.monthSuffix}</span></span>
-                  </div>
+                <h4 className="text-2xl font-extrabold text-slate-950 tracking-tight mb-2 group-hover:text-blue-950 transition-colors">
+                  {item.title}
+                </h4>
+                <p className="text-sm font-semibold text-blue-700/90 mb-4">{item.tagline}</p>
+                <p className="text-slate-600 text-sm leading-relaxed mb-6">{item.desc}</p>
 
-                  <div className="space-y-2.5">
-                    <div className="grid grid-cols-2 gap-3">
-                      <button
-                        onClick={() => onSimulate(item.price)}
-                        className="inline-flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl text-xs font-bold text-white bg-slate-900 hover:bg-slate-800 active:bg-black shadow-sm transition-all duration-200 cursor-pointer"
-                      >
-                        <Calculator size={13} />
-                        {t.simulateBtn}
-                      </button>
-                      <button
-                        onClick={onRegister}
-                        className="inline-flex items-center justify-center gap-1 py-2.5 px-3 rounded-xl text-xs font-bold text-blue-700 bg-white hover:bg-slate-50 border border-blue-200 shadow-3xs transition-all duration-200 cursor-pointer"
-                      >
-                        {t.agreeBtn}
-                        <ArrowRight size={12} className="group-hover:translate-x-0.5 transition-transform" />
-                      </button>
+                <div className="space-y-2 mb-8 bg-white/60 backdrop-blur-xs rounded-xl p-4 border border-slate-200/50 shadow-3xs">
+                  {item.specs.map((spec, i) => (
+                    <div key={i} className="flex items-center gap-2 text-xs font-medium text-slate-700">
+                      <div className="w-1.5 h-1.5 rounded-full bg-blue-500"></div>
+                      {spec}
                     </div>
-                    {item.videoUrl && (
-                      <button
-                        onClick={() => {
-                          setActiveVideo(item.videoUrl!);
-                          setActiveVideoTitle(item.title);
-                        }}
-                        className="w-full inline-flex items-center justify-center gap-1.5 py-2 px-3 rounded-xl text-xs font-bold text-slate-700 bg-slate-100 hover:bg-slate-200 active:bg-slate-300 transition-all duration-200 cursor-pointer border border-slate-200/50"
-                      >
-                        <Play size={13} className="fill-slate-600 text-slate-600" />
-                        {lang === "FR" ? "Voir la démo vidéo" : "Bekijk videodemonstratie"}
-                      </button>
-                    )}
+                  ))}
+                </div>
+              </div>
+
+              <div className="space-y-4 pt-4 border-t border-slate-200/60">
+                <div className="flex justify-between items-baseline">
+                  <span className="text-xs text-slate-500 font-medium">{t.acquisitionPrice}</span>
+                  <span className="text-lg font-bold text-slate-900">€{item.price.toLocaleString(lang === "FR" ? "fr-FR" : "nl-NL")} <span className="text-[10px] text-slate-400 font-normal">HT</span></span>
+                </div>
+                
+                <div className="flex justify-between items-baseline bg-blue-600/5 p-3 rounded-lg border border-blue-600/10">
+                  <span className="text-xs font-semibold text-blue-800">{t.startingFrom}</span>
+                  <span className="text-xl font-extrabold text-blue-700">~€{item.monthlyEst} <span className="text-xs font-semibold text-blue-500/80">{t.monthSuffix}</span></span>
+                </div>
+
+                <div className="space-y-2.5">
+                  <div className="grid grid-cols-2 gap-3">
+                    <button
+                      onClick={() => onSimulate(item.price)}
+                      className="inline-flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl text-xs font-bold text-white bg-slate-900 hover:bg-slate-800 active:bg-black shadow-sm transition-all duration-200 cursor-pointer"
+                    >
+                      <Calculator size={13} />
+                      {t.simulateBtn}
+                    </button>
+                    <button
+                      onClick={onRegister}
+                      className="inline-flex items-center justify-center gap-1 py-2.5 px-3 rounded-xl text-xs font-bold text-blue-700 bg-white hover:bg-slate-50 border border-blue-200 shadow-3xs transition-all duration-200 cursor-pointer"
+                    >
+                      {t.agreeBtn}
+                      <ArrowRight size={12} className="group-hover:translate-x-0.5 transition-transform" />
+                    </button>
                   </div>
+                  {item.videoUrl && (
+                    <button
+                      onClick={() => {
+                        setActiveVideo(item.videoUrl!);
+                        setActiveVideoTitle(item.title);
+                      }}
+                      className="w-full inline-flex items-center justify-center gap-1.5 py-2 px-3 rounded-xl text-xs font-bold text-slate-700 bg-slate-100 hover:bg-slate-200 active:bg-slate-300 transition-all duration-200 cursor-pointer border border-slate-200/50"
+                    >
+                      <Play size={13} className="fill-slate-600 text-slate-600" />
+                      {lang === "FR" ? "Voir la démo vidéo" : "Bekijk videodemonstratie"}
+                    </button>
+                  )}
                 </div>
-              </div>
-            ))}
-          </div>
-
-          {/* Official IFrame Video Card */}
-          <div className="lg:col-span-4 flex">
-            <div className="w-full flex flex-col justify-between rounded-2xl border border-slate-200 bg-slate-950 text-white p-6 shadow-lg shadow-slate-900/10 relative overflow-hidden group">
-              <div className="absolute inset-0 bg-gradient-to-tr from-slate-950 via-slate-900 to-blue-950/20 z-0 pointer-events-none"></div>
-              
-              <div className="relative z-10 space-y-4">
-                <div className="flex justify-between items-center">
-                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-white/10 text-blue-400 border border-white/5 shadow-inner">
-                    <Play size={12} className="fill-blue-400" />
-                    LIVE DEMO
-                  </span>
-                  <span className="px-2 py-0.5 rounded border border-white/10 text-white/50 text-[9px] uppercase font-bold bg-white/5">
-                    HD 1080p
-                  </span>
-                </div>
-
-                <div>
-                  <h4 className="text-xl font-bold tracking-tight text-white">{t.videoTitle}</h4>
-                  <p className="text-xs text-white/60 mt-1">
-                    {lang === "FR" 
-                      ? "Visualisez l'application clinique et l'ergonomie de l'appareil en situation réelle." 
-                      : "Bekijk de klinische toepassing en ergonomie van het apparaat in een echte situatie."}
-                  </p>
-                </div>
-              </div>
-
-              {/* Video Container */}
-              <div className="relative rounded-xl overflow-hidden aspect-video border border-white/10 shadow-inner bg-slate-900 my-4 z-10">
-                <video 
-                  src="/videos/general-promo.mp4" 
-                  className="w-full h-full object-cover relative z-0"
-                  controls
-                  preload="metadata"
-                />
-              </div>
-
-              <div className="relative z-10 pt-4 border-t border-white/10 flex items-center justify-between text-xs text-white/50 font-medium">
-                <span>Cryo-Celsius® Liège</span>
-                <span className="flex items-center gap-1.5">
-                  <span className="relative flex h-2 w-2">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                    <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-                  </span>
-                  {lang === "FR" ? "Actif" : "Actief"}
-                </span>
               </div>
             </div>
-          </div>
+          ))}
         </div>
       </div>
 

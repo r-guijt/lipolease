@@ -6,7 +6,7 @@ import RegistrationForm from "@/components/RegistrationForm";
 import ROICalculator from "@/components/ROICalculator";
 import FeaturesSection from "@/components/FeaturesSection";
 import MachineShowcase from "@/components/MachineShowcase";
-import { User } from "lucide-react";
+import { User, Calculator, ArrowRight } from "lucide-react";
 
 export type Language = "FR" | "NL";
 
@@ -83,21 +83,76 @@ export default function Home() {
       </nav>
 
       <main className="relative z-10 container mx-auto px-6 pb-20 pt-4 space-y-16">
-        <header className="text-center mb-6 space-y-6">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 border border-blue-200 text-blue-700 text-sm font-medium shadow-sm">
-            <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
-            </span>
-            {t.badge}
+        {/* Split Hero Section */}
+        <section className="grid lg:grid-cols-12 gap-12 items-center pt-8">
+          {/* Left Column (Content & CTAs) */}
+          <div className="lg:col-span-7 space-y-6 text-left">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 border border-blue-200 text-blue-700 text-sm font-medium shadow-sm">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
+              </span>
+              {t.badge}
+            </div>
+            <h1 className="text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight text-slate-900 leading-tight">
+              {t.title}
+            </h1>
+            <p className="text-lg md:text-xl text-slate-600 leading-relaxed max-w-xl">
+              {t.subtitle}
+            </p>
+            <div className="flex flex-wrap gap-4 pt-2">
+              <button
+                onClick={() => handleScrollToAgrement()}
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-bold text-white bg-blue-600 hover:bg-blue-700 active:bg-blue-800 shadow-md shadow-blue-500/10 hover:shadow-lg hover:shadow-blue-500/20 hover:-translate-y-0.5 transition-all duration-200 cursor-pointer"
+              >
+                {lang === "FR" ? "Demander l'Agrément" : "Erkenning Aanvragen"}
+                <ArrowRight size={16} />
+              </button>
+              <button
+                onClick={() => handleSimulate(32000)}
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-bold text-slate-700 bg-white hover:bg-slate-50 border border-slate-200 shadow-xs hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 cursor-pointer"
+              >
+                <Calculator size={16} />
+                {lang === "FR" ? "Simuler le Financement" : "Financiering Simuleren"}
+              </button>
+            </div>
           </div>
-          <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-blue-900 via-slate-900 to-slate-700 drop-shadow-sm">
-            {t.title}
-          </h1>
-          <p className="text-xl text-slate-600 max-w-2xl mx-auto leading-relaxed">
-            {t.subtitle}
-          </p>
-        </header>
+
+          {/* Right Column (Prominent Autoplaying Video) */}
+          <div className="lg:col-span-5 w-full">
+            <div className="w-full rounded-3xl border border-slate-200/80 bg-slate-950 text-white p-4 shadow-xl shadow-slate-950/10 relative overflow-hidden group">
+              <div className="absolute inset-0 bg-gradient-to-tr from-slate-950 via-slate-900 to-blue-950/15 z-0 pointer-events-none"></div>
+              
+              {/* Header Info Overlay */}
+              <div className="relative z-10 flex justify-between items-center mb-3 px-2">
+                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-bold bg-white/10 text-blue-400 border border-white/5 shadow-inner">
+                  <span className="relative flex h-1.5 w-1.5">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500"></span>
+                  </span>
+                  {lang === "FR" ? "DÉMO EN STREAMING" : "LIVE DEMONSTRATIE"}
+                </span>
+                <span className="text-[10px] font-semibold text-white/50 bg-white/5 px-2 py-0.5 rounded border border-white/10">
+                  HD 1080p
+                </span>
+              </div>
+
+              {/* Video Element */}
+              <div className="relative rounded-2xl overflow-hidden aspect-video border border-white/10 bg-slate-900 shadow-inner z-10">
+                <video 
+                  src="/videos/general-promo.mp4" 
+                  className="w-full h-full object-cover"
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  controls
+                  preload="metadata"
+                />
+              </div>
+            </div>
+          </div>
+        </section>
 
         {/* 1. Brand Showcase catalog (with Flagship focus & Embedded Video) */}
         <MachineShowcase 
