@@ -54,9 +54,9 @@ export default async function DashboardPage() {
       <header className="bg-white border-b border-slate-200 py-4 px-6 sticky top-0 z-10 flex justify-between items-center">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-blue-600 to-indigo-600 flex items-center justify-center text-white font-bold shadow-md">
-            W
+            L
           </div>
-          <h1 className="text-xl font-bold tracking-tight">Well Being <span className="text-blue-600">Pro</span></h1>
+          <h1 className="text-xl font-bold tracking-tight">LipoLease <span className="text-blue-600">Pro</span></h1>
         </div>
         <div className="flex items-center gap-4">
           <span className="text-sm text-slate-600 hidden md:inline-block">{user.email}</span>
