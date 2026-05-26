@@ -32,7 +32,7 @@ export default function Home() {
 
   const t = {
     badge: lang === "FR" ? "Distributeur Exclusif — France & Belgique" : "Exclusieve Distributeur — Frankrijk & België",
-    title: lang === "FR" ? "Cryo-Celsius®" : "Cryo-Celsius®",
+    title: lang === "FR" ? "LipoLease" : "LipoLease",
     subtitle: lang === "FR" 
       ? "L'excellence de la cryolipolyse médicale européenne. Acquérez le dispositif CE Médical de référence sans CapEx initial grâce à nos solutions de leasing fiscalement optimisées." 
       : "De uitmuntendheid van Europese medische cryolipolyse. Verwerf het toonaangevende CE Medische apparaat zonder CapEx vooraf dankzij onze fiscaal geoptimaliseerde leasingsoplossingen."
@@ -48,7 +48,7 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <span className="font-extrabold text-xl md:text-2xl bg-gradient-to-r from-blue-900 to-indigo-950 bg-clip-text text-transparent tracking-tight pb-1 leading-normal">
-              Cryo-Celsius®
+              LipoLease
             </span>
           </div>
           
@@ -173,7 +173,7 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-8 items-center justify-between">
           <div className="space-y-3">
             <span className="font-extrabold text-lg text-slate-900 tracking-tight">
-              Cryo-Celsius® <span className="text-slate-400 font-normal text-xs">by Well Being Distribution</span>
+              LipoLease
             </span>
             <p className="text-xs text-slate-500 max-w-sm">
               {lang === "FR" 
@@ -181,7 +181,7 @@ export default function Home() {
                 : "Exclusieve distributeur van CE Medisch IIa gecertificeerde medische apparatuur voor Frankrijk en België."}
             </p>
             <p className="text-[10px] text-slate-400">
-              Chaussée de Tongres 482, 4000 Liège, Belgique | info@cryo-celsius.be | +32 489 81 95 21
+              info@cryo-celsius.be | +32 489 81 95 21
             </p>
           </div>
 
