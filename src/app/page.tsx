@@ -123,19 +123,6 @@ export default function Home() {
             <div className="w-full rounded-3xl border border-slate-200/80 bg-slate-950 text-white p-4 shadow-xl shadow-slate-950/10 relative overflow-hidden group">
               <div className="absolute inset-0 bg-gradient-to-tr from-slate-950 via-slate-900 to-blue-950/15 z-0 pointer-events-none"></div>
               
-              {/* Header Info Overlay */}
-              <div className="relative z-10 flex justify-between items-center mb-3 px-2">
-                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-bold bg-white/10 text-blue-400 border border-white/5 shadow-inner">
-                  <span className="relative flex h-1.5 w-1.5">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                    <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500"></span>
-                  </span>
-                  {lang === "FR" ? "DÉMO EN STREAMING" : "LIVE DEMONSTRATIE"}
-                </span>
-                <span className="text-[10px] font-semibold text-white/50 bg-white/5 px-2 py-0.5 rounded border border-white/10">
-                  HD 1080p
-                </span>
-              </div>
 
               {/* Video Element */}
               <div className="relative rounded-2xl overflow-hidden aspect-video border border-white/10 bg-slate-900 shadow-inner z-10">
