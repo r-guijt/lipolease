@@ -32,7 +32,7 @@ export default function Home() {
 
   const t = {
     badge: lang === "FR" ? "Distributeur Exclusif — France & Belgique" : "Exclusieve Distributeur — Frankrijk & België",
-    title: lang === "FR" ? "LipoLease" : "LipoLease",
+    title: lang === "FR" ? "Cryo-Celsius®" : "Cryo-Celsius®",
     subtitle: lang === "FR" 
       ? "L'excellence de la cryolipolyse médicale européenne. Acquérez le dispositif CE Médical de référence sans CapEx initial grâce à nos solutions de leasing fiscalement optimisées." 
       : "De uitmuntendheid van Europese medische cryolipolyse. Verwerf het toonaangevende CE Medische apparaat zonder CapEx vooraf dankzij onze fiscaal geoptimaliseerde leasingsoplossingen."
