@@ -48,21 +48,21 @@ export default function HomeClient({ initialSettings }: Props) {
 
       {/* Sticky Premium Navbar */}
       <nav className="sticky top-0 z-30 w-full border-b border-slate-200/80 bg-white/70 backdrop-blur-md shadow-xs">
-        <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+        <div className="max-w-7xl mx-auto px-4 md:px-6 py-3 md:py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <span className="font-extrabold text-xl md:text-2xl bg-gradient-to-r from-blue-900 to-indigo-950 bg-clip-text text-transparent tracking-tight pb-1 leading-normal">
               LipoLease
             </span>
           </div>
           
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2 md:gap-4">
             {/* CTA Button "Créer un compte" / "Account aanmaken" */}
             <a
               href="#agrement"
               onClick={handleScrollToAgrement}
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 active:bg-blue-800 shadow-md shadow-blue-500/10 hover:shadow-lg hover:shadow-blue-500/20 hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200 cursor-pointer"
+              className="inline-flex items-center gap-1.5 md:gap-2 px-3 py-2 md:px-5 md:py-2.5 rounded-full text-xs md:text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 active:bg-blue-800 shadow-md shadow-blue-500/10 hover:shadow-lg hover:shadow-blue-500/20 hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200 cursor-pointer"
             >
-              <User size={16} />
+              <User size={16} className="w-3.5 h-3.5 md:w-4 md:h-4" />
               <span>{lang === "FR" ? "Créer un compte" : "Account aanmaken"}</span>
             </a>
 
