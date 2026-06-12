@@ -199,9 +199,6 @@ export default function HomeClient({ initialSettings, initialProviders }: Props)
                 ? "Distributeur exclusif de dispositifs médicaux certifiés CE Médical IIa pour la France et la Belgique."
                 : "Exclusieve distributeur van CE Medisch IIa gecertificeerde medische apparatuur voor Frankrijk en België."}
             </p>
-            <p className="text-[10px] text-slate-400">
-              info@cryo-celsius.be | +32 489 81 95 21
-            </p>
           </div>
 
           <div className="flex flex-col md:items-end gap-3">
