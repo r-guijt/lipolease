@@ -211,16 +211,29 @@ export default function MachineShowcase({ lang, onSimulate, onRegister }: Props)
                     </button>
                   </div>
                   {config.showVideoButtons && (
-                    <button
+                    <div 
                       onClick={() => {
                         setActiveVideo(item.videoUrl || config.fallbackVideoUrl);
                         setActiveVideoTitle(item.title);
                       }}
-                      className="w-full inline-flex items-center justify-center gap-1.5 py-2 px-3 rounded-xl text-xs font-bold text-slate-700 bg-slate-100 hover:bg-slate-200 active:bg-slate-300 transition-all duration-200 cursor-pointer border border-slate-200/50"
+                      className="relative w-full aspect-video rounded-xl overflow-hidden cursor-pointer border border-slate-200/60 shadow-3xs group/video mt-2"
                     >
-                      <Play size={13} className="fill-slate-600 text-slate-600" />
-                      {lang === "FR" ? "Voir la démo vidéo" : "Bekijk videodemonstratie"}
-                    </button>
+                      <video 
+                        src={item.videoUrl || config.fallbackVideoUrl} 
+                        preload="metadata" 
+                        muted 
+                        playsInline 
+                        className="w-full h-full object-cover group-hover/video:scale-105 transition-transform duration-300"
+                      />
+                      <div className="absolute inset-0 bg-slate-950/45 group-hover/video:bg-slate-950/35 transition-colors flex flex-col items-center justify-center gap-2">
+                        <div className="w-9 h-9 rounded-full bg-white/95 flex items-center justify-center text-blue-600 shadow-md group-hover/video:scale-110 transition-transform duration-200">
+                          <Play size={14} className="fill-blue-600 ml-0.5 text-blue-600" />
+                        </div>
+                        <span className="text-[10px] font-bold text-white uppercase tracking-wider bg-slate-900/60 px-2.5 py-0.5 rounded-full backdrop-blur-xs">
+                          {lang === "FR" ? "Voir la démo vidéo" : "Bekijk videodemonstratie"}
+                        </span>
+                      </div>
+                    </div>
                   )}
                 </div>
               </div>
@@ -268,35 +281,39 @@ export default function MachineShowcase({ lang, onSimulate, onRegister }: Props)
                   <span className="text-base font-extrabold text-slate-800">~€{item.monthlyEst} <span className="text-[10px] font-semibold text-slate-500/80">{t.monthSuffix}</span></span>
                 </div>
 
-                {config.showVideoButtons && (item.videoUrl || config.fallbackVideoUrl) ? (
-                  <div className="grid grid-cols-2 gap-2">
-                    <button
-                      onClick={() => onSimulate(item.price)}
-                      className="inline-flex items-center justify-center gap-1.5 py-2 px-2 rounded-lg text-xs font-bold text-white bg-slate-900 hover:bg-slate-800 active:bg-black transition-all cursor-pointer"
-                    >
-                      <Calculator size={12} />
-                      {t.simulateBtn}
-                    </button>
-                    <button
-                      onClick={() => {
-                        setActiveVideo(item.videoUrl || config.fallbackVideoUrl);
-                        setActiveVideoTitle(item.title);
-                      }}
-                      className="inline-flex items-center justify-center gap-1 py-2 px-2 rounded-lg text-xs font-bold text-slate-700 bg-slate-100 hover:bg-slate-200 active:bg-slate-300 transition-all cursor-pointer border border-slate-200/40"
-                    >
-                      <Play size={12} className="fill-slate-600 text-slate-600" />
-                      {lang === "FR" ? "Vidéo" : "Video"}
-                    </button>
-                  </div>
-                ) : (
-                  <button
-                    onClick={() => onSimulate(item.price)}
-                    className="w-full inline-flex items-center justify-center gap-1.5 py-2 px-3 rounded-lg text-xs font-bold text-white bg-slate-900 hover:bg-slate-800 active:bg-black transition-all cursor-pointer"
+                {config.showVideoButtons && (item.videoUrl || config.fallbackVideoUrl) && (
+                  <div 
+                    onClick={() => {
+                      setActiveVideo(item.videoUrl || config.fallbackVideoUrl);
+                      setActiveVideoTitle(item.title);
+                    }}
+                    className="relative w-full aspect-video rounded-lg overflow-hidden cursor-pointer border border-slate-200/60 shadow-3xs group/video"
                   >
-                    <Calculator size={12} />
-                    {t.simulateBtn}
-                  </button>
+                    <video 
+                      src={item.videoUrl || config.fallbackVideoUrl} 
+                      preload="metadata" 
+                      muted 
+                      playsInline 
+                      className="w-full h-full object-cover group-hover/video:scale-105 transition-transform duration-300"
+                    />
+                    <div className="absolute inset-0 bg-slate-950/45 group-hover/video:bg-slate-950/35 transition-colors flex flex-col items-center justify-center gap-1.5">
+                      <div className="w-8 h-8 rounded-full bg-white/95 flex items-center justify-center text-blue-600 shadow-md group-hover/video:scale-110 transition-transform duration-200">
+                        <Play size={12} className="fill-blue-600 ml-0.5 text-blue-600" />
+                      </div>
+                      <span className="text-[9px] font-bold text-white uppercase tracking-wider bg-slate-900/60 px-2 py-0.5 rounded-full backdrop-blur-xs">
+                        {lang === "FR" ? "Voir la démo" : "Bekijk demo"}
+                      </span>
+                    </div>
+                  </div>
                 )}
+
+                <button
+                  onClick={() => onSimulate(item.price)}
+                  className="w-full inline-flex items-center justify-center gap-1.5 py-2 px-3 rounded-lg text-xs font-bold text-white bg-slate-900 hover:bg-slate-800 active:bg-black transition-all cursor-pointer"
+                >
+                  <Calculator size={12} />
+                  {t.simulateBtn}
+                </button>
               </div>
             </div>
           ))}
