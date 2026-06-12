@@ -29,6 +29,19 @@ export default function MachineShowcase({ lang, onSimulate, onRegister }: Props)
     };
   }, [activeVideo]);
 
+  const getPreviewSrc = (url: string | undefined) => {
+    const activeUrl = url || config.fallbackVideoUrl;
+    if (
+      activeUrl.includes("youtube.com") ||
+      activeUrl.includes("youtu.be") ||
+      activeUrl.includes("vimeo.com") ||
+      activeUrl.includes("embed")
+    ) {
+      return activeUrl;
+    }
+    return `${activeUrl}#t=0.001`;
+  };
+
 
   const t = {
     title: lang === "FR" ? "Gamme Cryo-Celsius® & Technologies" : "Cryo-Celsius® Assortiment & Technologie",
@@ -219,7 +232,7 @@ export default function MachineShowcase({ lang, onSimulate, onRegister }: Props)
                       className="relative w-full aspect-video rounded-xl overflow-hidden cursor-pointer border border-slate-200/60 shadow-3xs group/video mt-2"
                     >
                       <video 
-                        src={item.videoUrl || config.fallbackVideoUrl} 
+                        src={getPreviewSrc(item.videoUrl)} 
                         preload="metadata" 
                         muted 
                         playsInline 
@@ -290,7 +303,7 @@ export default function MachineShowcase({ lang, onSimulate, onRegister }: Props)
                     className="relative w-full aspect-video rounded-lg overflow-hidden cursor-pointer border border-slate-200/60 shadow-3xs group/video"
                   >
                     <video 
-                      src={item.videoUrl || config.fallbackVideoUrl} 
+                      src={getPreviewSrc(item.videoUrl)} 
                       preload="metadata" 
                       muted 
                       playsInline 
