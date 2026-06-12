@@ -1,5 +1,6 @@
 export const config = {
   // WhatsApp Configuration
+  showWhatsAppButton: false, // Set to true to reactivate the floating button
   whatsappNumber: "+32489819521",
   whatsappMessage: "Bonjour, je souhaite des informations sur le leasing Cryo-Celsius",
   
