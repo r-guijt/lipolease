@@ -19,6 +19,7 @@ export default function RegistrationForm({ lang }: Props) {
   const [professionalId, setProfessionalId] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [consent, setConsent] = useState(false);
   
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -64,12 +65,24 @@ export default function RegistrationForm({ lang }: Props) {
     successDesc: lang === "FR"
       ? `Vos informations ont été enregistrées. Redirection vers votre tableau de bord...`
       : `Uw gegevens zijn opgeslagen. U wordt doorgestuurd naar uw dashboard...`,
-    continueBtn: lang === "FR" ? "Aller au Tableau de Bord" : "Naar het Dashboard"
+    continueBtn: lang === "FR" ? "Aller au Tableau de Bord" : "Naar het Dashboard",
+    consentText: lang === "FR"
+      ? "J'accepte la création de mon compte et le traitement de mes données conformément à la"
+      : "Ik ga akkoord met het aanmaken van mijn account en de verwerking van mijn gegevens in overeenstemming met de",
+    privacyLinkText: lang === "FR" ? "Politique de Confidentialité" : "Privacybeleid & GDPR",
+    errorConsent: lang === "FR"
+      ? "Vous devez accepter la politique de confidentialité pour vous inscrire."
+      : "U moet akkoord gaan met het privacybeleid om u te registreren."
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
+
+    if (!consent) {
+      setError(t.errorConsent);
+      return;
+    }
 
     // Hard Blocks (Legal Compliance)
     if (role === "ESTHETICIAN" || role === "PHARMACIST" || role === "OTHER") {
@@ -253,6 +266,24 @@ export default function RegistrationForm({ lang }: Props) {
             {error}
           </div>
         )}
+
+        <div className="pt-2">
+          <label className="flex items-start gap-3 cursor-pointer">
+            <input
+              type="checkbox"
+              checked={consent}
+              onChange={(e) => setConsent(e.target.checked)}
+              className="w-4 h-4 rounded text-blue-600 border-slate-300 focus:ring-blue-500/20 mt-0.5 shrink-0"
+            />
+            <span className="text-slate-500 text-xs leading-relaxed select-none">
+              {t.consentText}{" "}
+              <a href={`/legal/privacy?lang=${lang}`} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline font-semibold">
+                {t.privacyLinkText}
+              </a>
+              .
+            </span>
+          </label>
+        </div>
 
         <button
           type="submit"

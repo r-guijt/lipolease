@@ -76,6 +76,13 @@ export default function DashboardClient() {
   const [editedRates, setEditedRates] = useState<Record<string, string>>({});
   const [editedSettings, setEditedSettings] = useState<Record<string, string>>({});
 
+  // Account Password Change states
+  const [currentPassword, setCurrentPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [passwordStatus, setPasswordStatus] = useState<{ type: "success" | "error"; message: string } | null>(null);
+  const [isUpdatingPassword, setIsUpdatingPassword] = useState(false);
+
   useEffect(() => {
     fetchData();
   }, []);
@@ -184,6 +191,39 @@ export default function DashboardClient() {
       setSettingsNotification({ type: "error", message: "Erreur lors de la sauvegarde des paramètres." });
     } finally {
       setIsSavingSettings(false);
+    }
+  };
+
+  const handleChangePassword = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setPasswordStatus(null);
+
+    if (newPassword !== confirmPassword) {
+      setPasswordStatus({ type: "error", message: "Les mots de passe ne correspondent pas." });
+      return;
+    }
+
+    setIsUpdatingPassword(true);
+    try {
+      const res = await fetch("/api/admin/change-password", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ currentPassword, newPassword })
+      });
+
+      if (res.ok) {
+        setPasswordStatus({ type: "success", message: "Mot de passe modifié avec succès !" });
+        setCurrentPassword("");
+        setNewPassword("");
+        setConfirmPassword("");
+      } else {
+        const txt = await res.text();
+        throw new Error(txt || "Erreur de mise à jour");
+      }
+    } catch (err: any) {
+      setPasswordStatus({ type: "error", message: err.message || "Erreur lors de la modification du mot de passe." });
+    } finally {
+      setIsUpdatingPassword(false);
     }
   };
 
@@ -576,25 +616,25 @@ export default function DashboardClient() {
 
         {/* TAB 3: THE BRAIN PARAMETERS */}
         {activeTab === "parameters" && (
-          <form onSubmit={handleSaveSettings} className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start max-w-5xl mx-auto">
+          <div className="space-y-8 max-w-5xl mx-auto">
             
             {/* Notification alert */}
             {settingsNotification && (
-              <div className={`col-span-12 p-4 rounded-2xl border text-xs font-semibold flex items-center gap-2 ${settingsNotification.type === "success" ? "bg-emerald-950/40 border-emerald-500/30 text-emerald-300" : "bg-red-950/40 border-red-500/30 text-red-300"}`}>
+              <div className={`p-4 rounded-2xl border text-xs font-semibold flex items-center gap-2 ${settingsNotification.type === "success" ? "bg-emerald-950/40 border-emerald-500/30 text-emerald-300" : "bg-red-950/40 border-red-500/30 text-red-300"}`}>
                 {settingsNotification.type === "success" ? <CheckCircle size={16} /> : <AlertCircle size={16} />}
                 <span>{settingsNotification.message}</span>
               </div>
             )}
-
-            {/* Left Parameters Forms */}
-            <div className="lg:col-span-6 space-y-6">
-              
-              {/* Module C1: Price Overrides Assumptions */}
-              <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-5">
-                <h2 className="text-sm font-bold text-slate-100 border-b border-slate-800 pb-3 flex items-center gap-2">
-                  <TrendingUp className="text-blue-500" size={16} />
-                  <span>Hypothèses Tarifs Séances (BE & FR)</span>
-                </h2>
+            <form onSubmit={handleSaveSettings} className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+              {/* Left Parameters Forms */}
+              <div className="lg:col-span-6 space-y-6">
+                
+                {/* Module C1: Price Overrides Assumptions */}
+                <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-5">
+                  <h2 className="text-sm font-bold text-slate-100 border-b border-slate-800 pb-3 flex items-center gap-2">
+                    <TrendingUp className="text-blue-500" size={16} />
+                    <span>Hypothèses Tarifs Séances (BE & FR)</span>
+                  </h2>
 
                 <div className="space-y-4 text-xs">
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -762,7 +802,71 @@ export default function DashboardClient() {
             </div>
 
           </form>
-        )}
+
+          <hr className="border-slate-800 my-8" />
+
+          {/* Change Password Card */}
+          <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 max-w-xl space-y-5">
+            <h2 className="text-sm font-bold text-slate-100 border-b border-slate-800 pb-3 flex items-center gap-2">
+              🔐 <span>Sécurité du Compte (Changer le mot de passe)</span>
+            </h2>
+
+            {passwordStatus && (
+              <div className={`p-3.5 rounded-xl border text-xs font-semibold ${passwordStatus.type === "success" ? "bg-emerald-950/40 border-emerald-500/35 text-emerald-300" : "bg-red-950/40 border-red-500/35 text-red-300"}`}>
+                {passwordStatus.message}
+              </div>
+            )}
+
+            <form onSubmit={handleChangePassword} className="space-y-4 text-xs">
+              <div className="space-y-1.5">
+                <label className="block text-[10px] text-slate-400 font-bold uppercase tracking-wider">Mot de passe actuel</label>
+                <input
+                  type="password"
+                  value={currentPassword}
+                  onChange={(e) => setCurrentPassword(e.target.value)}
+                  className="w-full bg-slate-950 border border-slate-800 text-slate-200 rounded-xl py-2.5 px-3 focus:outline-none focus:border-blue-500 font-semibold"
+                  required
+                />
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="space-y-1.5">
+                  <label className="block text-[10px] text-slate-400 font-bold uppercase tracking-wider">Nouveau mot de passe</label>
+                  <input
+                    type="password"
+                    value={newPassword}
+                    onChange={(e) => setNewPassword(e.target.value)}
+                    className="w-full bg-slate-950 border border-slate-800 text-slate-200 rounded-xl py-2.5 px-3 focus:outline-none focus:border-blue-500 font-semibold"
+                    required
+                  />
+                </div>
+                <div className="space-y-1.5">
+                  <label className="block text-[10px] text-slate-400 font-bold uppercase tracking-wider">Confirmer le mot de passe</label>
+                  <input
+                    type="password"
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    className="w-full bg-slate-950 border border-slate-800 text-slate-200 rounded-xl py-2.5 px-3 focus:outline-none focus:border-blue-500 font-semibold"
+                    required
+                  />
+                </div>
+              </div>
+
+              <button
+                type="submit"
+                disabled={isUpdatingPassword}
+                className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-bold py-2.5 px-4 rounded-xl transition-all flex items-center justify-center gap-2 shadow-lg shadow-blue-500/10 cursor-pointer disabled:opacity-50"
+              >
+                {isUpdatingPassword ? (
+                  <Loader2 className="animate-spin" size={14} />
+                ) : null}
+                <span>Modifier le mot de passe</span>
+              </button>
+            </form>
+          </div>
+
+        </div>
+      )}
 
       </main>
     </div>

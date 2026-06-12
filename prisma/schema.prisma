@@ -148,3 +148,23 @@ model SystemSetting {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
+
+model Lead {
+  id                String   @id @default(cuid())
+  name              String?
+  email             String
+  phone             String?
+  country           String?  // FR or BE
+  source            String   // CONTACT or SIMULATION
+  // Simulation details
+  devicePrice       Float?
+  duration          Int?
+  monthlyPatients   Int?
+  sessionPrice      Float?
+  monthlyLease      Float?
+  monthlyRevenue    Float?
+  breakEvenPatients Int?
+  consent           Boolean  @default(true)
+  createdAt         DateTime @default(now())
+}
+

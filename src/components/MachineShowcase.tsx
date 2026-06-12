@@ -3,6 +3,7 @@
 import React from "react";
 import { Snowflake, Sparkles, Activity, Zap, Play, Calculator, ArrowRight, X } from "lucide-react";
 import type { Language } from "@/app/page";
+import { config } from "@/lib/config";
 
 interface Props {
   lang: Language;
@@ -13,6 +14,21 @@ interface Props {
 export default function MachineShowcase({ lang, onSimulate, onRegister }: Props) {
   const [activeVideo, setActiveVideo] = React.useState<string | null>(null);
   const [activeVideoTitle, setActiveVideoTitle] = React.useState<string>("");
+
+  React.useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setActiveVideo(null);
+      }
+    };
+    if (activeVideo) {
+      window.addEventListener("keydown", handleKeyDown);
+    }
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [activeVideo]);
+
 
   const t = {
     title: lang === "FR" ? "Gamme Cryo-Celsius® & Technologies" : "Cryo-Celsius® Assortiment & Technologie",
@@ -194,10 +210,10 @@ export default function MachineShowcase({ lang, onSimulate, onRegister }: Props)
                       <ArrowRight size={12} className="group-hover:translate-x-0.5 transition-transform" />
                     </button>
                   </div>
-                  {item.videoUrl && (
+                  {config.showVideoButtons && (
                     <button
                       onClick={() => {
-                        setActiveVideo(item.videoUrl!);
+                        setActiveVideo(item.videoUrl || config.fallbackVideoUrl);
                         setActiveVideoTitle(item.title);
                       }}
                       className="w-full inline-flex items-center justify-center gap-1.5 py-2 px-3 rounded-xl text-xs font-bold text-slate-700 bg-slate-100 hover:bg-slate-200 active:bg-slate-300 transition-all duration-200 cursor-pointer border border-slate-200/50"
@@ -252,7 +268,7 @@ export default function MachineShowcase({ lang, onSimulate, onRegister }: Props)
                   <span className="text-base font-extrabold text-slate-800">~€{item.monthlyEst} <span className="text-[10px] font-semibold text-slate-500/80">{t.monthSuffix}</span></span>
                 </div>
 
-                {item.videoUrl ? (
+                {config.showVideoButtons && (item.videoUrl || config.fallbackVideoUrl) ? (
                   <div className="grid grid-cols-2 gap-2">
                     <button
                       onClick={() => onSimulate(item.price)}
@@ -263,7 +279,7 @@ export default function MachineShowcase({ lang, onSimulate, onRegister }: Props)
                     </button>
                     <button
                       onClick={() => {
-                        setActiveVideo(item.videoUrl!);
+                        setActiveVideo(item.videoUrl || config.fallbackVideoUrl);
                         setActiveVideoTitle(item.title);
                       }}
                       className="inline-flex items-center justify-center gap-1 py-2 px-2 rounded-lg text-xs font-bold text-slate-700 bg-slate-100 hover:bg-slate-200 active:bg-slate-300 transition-all cursor-pointer border border-slate-200/40"
@@ -310,12 +326,26 @@ export default function MachineShowcase({ lang, onSimulate, onRegister }: Props)
 
             {/* Video Element */}
             <div className="aspect-video bg-black flex items-center justify-center">
-              <video 
-                src={activeVideo} 
-                controls 
-                autoPlay 
-                className="w-full h-full object-contain"
-              />
+              {activeVideo.includes("youtube.com") || 
+               activeVideo.includes("youtu.be") || 
+               activeVideo.includes("vimeo.com") || 
+               activeVideo.includes("embed") ? (
+                <iframe
+                  src={activeVideo}
+                  title={activeVideoTitle}
+                  frameBorder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowFullScreen
+                  className="w-full h-full object-contain"
+                />
+              ) : (
+                <video 
+                  src={activeVideo} 
+                  controls 
+                  autoPlay 
+                  className="w-full h-full object-contain"
+                />
+              )}
             </div>
           </div>
         </div>

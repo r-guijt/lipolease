@@ -12,5 +12,18 @@ export default async function Home() {
     return acc;
   }, {});
 
-  return <HomeClient initialSettings={settings} />;
+  // Query active providers and their rates
+  const providers = await prisma.leaseProvider.findMany({
+    where: { isActive: true },
+    include: {
+      rates: {
+        orderBy: { durationMonths: "asc" }
+      }
+    },
+    orderBy: { name: "asc" }
+  });
+
+  const serializedProviders = JSON.parse(JSON.stringify(providers));
+
+  return <HomeClient initialSettings={settings} initialProviders={serializedProviders} />;
 }

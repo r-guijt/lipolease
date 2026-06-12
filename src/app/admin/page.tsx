@@ -82,7 +82,8 @@ export default function AdminLoginPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="admin@lipolease.com"
-                className="w-full bg-white/[0.04] border border-white/10 rounded-2xl py-3.5 pl-12 pr-4 text-white placeholder-slate-500 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/25 focus:border-blue-500/80 transition-all font-medium"
+                className="w-full bg-slate-950 border border-white/10 rounded-2xl py-3.5 pl-12 pr-4 text-slate-100 placeholder-slate-500 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/25 focus:border-blue-500/80 transition-all font-medium"
+                style={{ backgroundColor: "#090d16", color: "#ffffff" }}
                 required
               />
             </div>
@@ -99,7 +100,8 @@ export default function AdminLoginPage() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
-                className="w-full bg-white/[0.04] border border-white/10 rounded-2xl py-3.5 pl-12 pr-4 text-white placeholder-slate-500 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/25 focus:border-blue-500/80 transition-all font-medium"
+                className="w-full bg-slate-950 border border-white/10 rounded-2xl py-3.5 pl-12 pr-4 text-slate-100 placeholder-slate-500 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/25 focus:border-blue-500/80 transition-all font-medium"
+                style={{ backgroundColor: "#090d16", color: "#ffffff" }}
                 required
               />
             </div>

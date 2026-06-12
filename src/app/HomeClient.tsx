@@ -6,20 +6,30 @@ import RegistrationForm from "@/components/RegistrationForm";
 import ROICalculator from "@/components/ROICalculator";
 import FeaturesSection from "@/components/FeaturesSection";
 import MachineShowcase from "@/components/MachineShowcase";
-import { User, Calculator, ArrowRight } from "lucide-react";
+import ContactForm from "@/components/ContactForm";
+import { User, Calculator, ArrowRight, FileText } from "lucide-react";
 import type { Language } from "./page";
 
 interface Props {
   initialSettings: Record<string, string>;
+  initialProviders?: any[];
 }
 
-export default function HomeClient({ initialSettings }: Props) {
+export default function HomeClient({ initialSettings, initialProviders }: Props) {
   const [lang, setLang] = useState<Language>("FR");
   const [devicePrice, setDevicePrice] = useState(32000); // Defaults to the flagship 4/8 plaques config (€32,000)
 
   const handleScrollToAgrement = (e?: React.MouseEvent) => {
     if (e) e.preventDefault();
     const element = document.getElementById("agrement");
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  };
+
+  const handleScrollToContact = (e?: React.MouseEvent) => {
+    if (e) e.preventDefault();
+    const element = document.getElementById("contact-documentation");
     if (element) {
       element.scrollIntoView({ behavior: "smooth", block: "start" });
     }
@@ -105,11 +115,11 @@ export default function HomeClient({ initialSettings }: Props) {
             </p>
             <div className="flex flex-wrap gap-4 pt-2">
               <button
-                onClick={() => handleScrollToAgrement()}
+                onClick={() => handleScrollToContact()}
                 className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-bold text-white bg-blue-600 hover:bg-blue-700 active:bg-blue-800 shadow-md shadow-blue-500/10 hover:shadow-lg hover:shadow-blue-500/20 hover:-translate-y-0.5 transition-all duration-200 cursor-pointer"
               >
-                {lang === "FR" ? "Demander l'Agrément" : "Erkenning Aanvragen"}
-                <ArrowRight size={16} />
+                <FileText size={16} />
+                {lang === "FR" ? "Obtenir la Documentation" : "Documentatie Aanvragen"}
               </button>
               <button
                 onClick={() => handleSimulate(32000)}
@@ -143,6 +153,11 @@ export default function HomeClient({ initialSettings }: Props) {
           </div>
         </section>
 
+        {/* Lightweight Contact Lead Form Section */}
+        <section id="contact-documentation" className="scroll-mt-28 py-4">
+          <ContactForm lang={lang} />
+        </section>
+
         {/* 1. Brand Showcase catalog */}
         <MachineShowcase 
           lang={lang} 
@@ -157,6 +172,7 @@ export default function HomeClient({ initialSettings }: Props) {
             devicePrice={devicePrice}
             setDevicePrice={setDevicePrice}
             initialSettings={initialSettings}
+            initialProviders={initialProviders}
           />
         </div>
 
